@@ -26,8 +26,6 @@ the project website at the project page on https://github.com/hervegirod/ChangeL
  */
 package org.girod.updatenbconf;
 
-import java.io.File;
-import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -35,7 +33,7 @@ import java.util.Map;
  * This class has only one static method which allows to return the launch arguments of a
  * main static method into a Map of &lt;key,value&gt;.
  *
- * @since 0.1
+ * @version 0.2
  */
 public class LauncherUtils {
    private LauncherUtils() {
@@ -120,59 +118,5 @@ public class LauncherUtils {
          }
       }
       return props;
-   }
-
-   /**
-    * Return the parent directory of the code which contains a class. For example:
-    * <ul>
-    * <li>If the class is not in a jar file, it is equivalent to getting the File with the
-    * <code>System.getProperty("user.dir")</code> path</li>
-    * <li>If the class is in a jar file, it will return the directory in which is the jar file</li>
-    * </ul>
-    *
-    * @param clazz the class
-    * @return the parent directory
-    */
-   public static File getUserDir(Class clazz) {
-      URL url = clazz.getProtectionDomain().getCodeSource().getLocation();
-      String urlAsText = replaceEscapedSequences(url.getFile());
-      File userDirFile = null;
-      if (!urlAsText.endsWith(".jar")) {
-         userDirFile = new File(System.getProperty("user.dir"));
-      } else if (urlAsText.startsWith("file:")) {
-         userDirFile = new File(urlAsText.substring(5)).getParentFile();
-      } else if (urlAsText.startsWith("http:")) {
-         userDirFile = new File(urlAsText.substring(5)).getParentFile();
-      } else if (urlAsText.startsWith("/")) {
-         userDirFile = new File(urlAsText.substring(1)).getParentFile();
-      } else {
-         userDirFile = new File(urlAsText).getParentFile();
-      }
-      return userDirFile;
-   }
-
-   /**
-    * Replace the percent-encoding escape sequences in a URL path by their equivalent characters.
-    */
-   private static String replaceEscapedSequences(String path) {
-      if (!path.contains("%")) {
-         return path;
-      } else {
-         StringBuilder buf = new StringBuilder();
-         int offset = 0;
-         while (true) {
-            int index = path.indexOf('%', offset);
-            if (index != -1) {
-               buf.append(path.substring(offset, index));
-               char c = (char) (int) Integer.decode("0x" + path.substring(index + 1, index + 3));
-               buf.append(c);
-               offset = index + 3;
-            } else {
-               buf.append(path.substring(offset));
-               break;
-            }
-         }
-         return buf.toString();
-      }
    }
 }

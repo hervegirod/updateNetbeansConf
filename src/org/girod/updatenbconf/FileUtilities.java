@@ -33,7 +33,7 @@ import java.util.regex.Pattern;
 /**
  * Various File utilities to deal with URLs.
  *
- * @since 0.1
+ * @version 0.2
  */
 public class FileUtilities {
    private static final Pattern PAT = Pattern.compile("(.*)[/\\x5C]\\w+[/\\x5C]\\x2E\\x2E[/\\x5C](.*)");
@@ -82,11 +82,7 @@ public class FileUtilities {
             file = new File(dir, path);
             file = collapse(file);
          }
-         if (file.exists()) {
-            return file;
-         } else {
-            return null;
-         }
+         return file;
       }
    }
 }

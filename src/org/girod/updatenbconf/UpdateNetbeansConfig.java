@@ -39,7 +39,7 @@ import java.util.Map;
 
 /**
  *
- * @since 0.1
+ * @version 0.2
  */
 public class UpdateNetbeansConfig {
    private static final String USER_DIR = "netbeans_default_userdir";
@@ -59,6 +59,7 @@ public class UpdateNetbeansConfig {
          }
       }
       if (properties.containsKey("cache")) {
+         System.out.println(userDir + ": " + properties.get("cache"));
          File cache = FileUtilities.getFile(userDir, properties.get("cache"));
          if (!cache.exists()) {
             cache.mkdir();
@@ -133,7 +134,7 @@ public class UpdateNetbeansConfig {
    }
 
    public static void main(String[] args) {
-      File userDir = LauncherUtils.getUserDir(UpdateNetbeansConfig.class);
+      File userDir = new File(System.getProperty("user.dir"));
       Map<String, String> properties = LauncherUtils.getLaunchProperties(args);
       UpdateNetbeansConfig config = new UpdateNetbeansConfig();
       boolean applied = config.apply(userDir, properties);
